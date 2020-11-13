@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')7pmwwdd^@79=2@qy!14^2)#yk%w2iobu&_lu95n4vs%o@__m2'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.environ.get('DEBUG') in ['T', 't', 'TRUE', 'True', 'true'] else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -77,21 +77,33 @@ WSGI_APPLICATION = 'coffeemerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'coffeemerce',
-        'HOST': '127.0.0.1',
-        'PORT': 27017,
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
+
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'djongo',
+#        'NAME': 'coffeemerce',
+#        'HOST': '127.0.0.1',
+#        'PORT': 27017,
+#    }
+#}
 
 
 # Password validation
@@ -131,3 +143,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
+
